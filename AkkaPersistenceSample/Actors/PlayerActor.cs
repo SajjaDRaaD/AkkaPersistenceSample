@@ -28,7 +28,7 @@ public class PlayerActor : ReceivePersistentActor
     private void CauseErrorMessageHandler(CauseErrorMessage message)
     {
         Console.WriteLine("System Message : Simulating a error.");
-        throw new NotImplementedException();
+        throw new Exception();
     }
 
     private void DisplayPlayerStatusMessageHandler(DisplayPlayerStatusMessage message)
