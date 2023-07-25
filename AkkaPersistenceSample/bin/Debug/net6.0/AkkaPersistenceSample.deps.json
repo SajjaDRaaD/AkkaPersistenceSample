@@ -10,7 +10,6 @@
         "dependencies": {
           "Akka": "1.5.9",
           "Akka.Persistence": "1.5.9",
-          "Akka.Persistence.Sql.Common": "1.5.9",
           "Akka.Persistence.SqlServer": "1.5.4"
         },
         "runtime": {
@@ -45,21 +44,21 @@
           }
         }
       },
-      "Akka.Persistence.Sql.Common/1.5.9": {
+      "Akka.Persistence.Sql.Common/1.5.4": {
         "dependencies": {
           "Akka.Persistence": "1.5.9",
           "System.Data.Common": "4.3.0"
         },
         "runtime": {
           "lib/net6.0/Akka.Persistence.Sql.Common.dll": {
-            "assemblyVersion": "1.5.9.0",
-            "fileVersion": "1.5.9.0"
+            "assemblyVersion": "1.5.4.0",
+            "fileVersion": "1.5.4.0"
           }
         }
       },
       "Akka.Persistence.SqlServer/1.5.4": {
         "dependencies": {
-          "Akka.Persistence.Sql.Common": "1.5.9",
+          "Akka.Persistence.Sql.Common": "1.5.4",
           "Microsoft.Data.SqlClient": "3.0.1"
         },
         "runtime": {
@@ -543,12 +542,12 @@
       "path": "akka.persistence/1.5.9",
       "hashPath": "akka.persistence.1.5.9.nupkg.sha512"
     },
-    "Akka.Persistence.Sql.Common/1.5.9": {
+    "Akka.Persistence.Sql.Common/1.5.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-QcYFMJMcOuUPgUhe+CSzSk1KmEsmocgoFsXco8+FnNJ3t98kiyUjeE93OdVIffCdWZ3In68rMyaFHMHnBm4r9Q==",
-      "path": "akka.persistence.sql.common/1.5.9",
-      "hashPath": "akka.persistence.sql.common.1.5.9.nupkg.sha512"
+      "sha512": "sha512-ZRWqCcPJTMgS7YsBl9yxXqXU6/Tjc9UlUEUNfhI6kwfKSJ/oelCtzwBLprH8m5n0Q1fo8iTA1N33YoicGVyfAA==",
+      "path": "akka.persistence.sql.common/1.5.4",
+      "hashPath": "akka.persistence.sql.common.1.5.4.nupkg.sha512"
     },
     "Akka.Persistence.SqlServer/1.5.4": {
       "type": "package",

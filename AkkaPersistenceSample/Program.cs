@@ -2,6 +2,7 @@
 using Akka.Dispatch.SysMsg;
 using AkkaPersistenceSample;
 using AkkaPersistenceSample.Actors;
+using AkkaPersistenceSample.Commands;
 
 var sys = ActorSystem.Create("Game");
 var playerCoordinator = sys.ActorOf(Props.Create<PlayerCoordinatorActor>(), "PlayerCoordinator");
@@ -25,7 +26,7 @@ while (true)
     if (command.Contains("hit"))
     {
         var damage = command.Split(" ")[2];
-        playerCoordinator.Tell(new HitMessage()
+        playerCoordinator.Tell(new HitPlayer()
         {
             PlayerName = playerName,
             Damage = Convert.ToInt32(damage)
@@ -34,7 +35,7 @@ while (true)
 
     if (command.Contains("display"))
     {
-        playerCoordinator.Tell(new DisplayPlayerStatusMessage()
+        playerCoordinator.Tell(new DisplayPlayerStatus()
         {
             PlayerName = playerName
         });
@@ -42,7 +43,7 @@ while (true)
 
     if (command.Contains("error"))
     {
-        playerCoordinator.Tell(new CauseErrorMessage()
+        playerCoordinator.Tell(new SimulateError()
         {
             PlayerName = playerName
         });
@@ -52,7 +53,7 @@ while (true)
 void CreatePlayer(string playerName)
 {
     Console.WriteLine($"System Message : {playerName} created successfully");
-    playerCoordinator.Tell(new CreatePlayerMessage
+    playerCoordinator.Tell(new CreatePlayer
     {
         PlayerName = playerName
     });

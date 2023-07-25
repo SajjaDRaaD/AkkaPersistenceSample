@@ -13,4 +13,8 @@
       <PackageReference Include="Akka.Persistence.SqlServer" Version="1.5.4" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Messages\" />
+    </ItemGroup>
+
 </Project>

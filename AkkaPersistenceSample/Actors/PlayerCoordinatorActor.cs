@@ -1,5 +1,7 @@
 using Akka.Actor;
 using Akka.Persistence;
+using AkkaPersistenceSample.Commands;
+using AkkaPersistenceSample.Events;
 
 namespace AkkaPersistenceSample.Actors;
 
@@ -10,49 +12,42 @@ public class PlayerCoordinatorActor : ReceivePersistentActor
 
     public PlayerCoordinatorActor()
     {
-        Command<CreatePlayerMessage>(CreatePlayerMessageHandler);
-        Command<HitMessage>(HitMessageHandler);
-        Command<DisplayPlayerStatusMessage>(DisplayPlayerStatusMessageHandler);
-        Command<CauseErrorMessage>(CauseErrorMessageHandler);
-        Recover<CreatePlayerMessage>(message =>
+        Command<CreatePlayer>(CreatePlayerCommandHandler);
+        Command<HitPlayer>(HitPlayerCommandHandler);
+        Command<DisplayPlayerStatus>(DisplayPlayerStatusCommandHandler);
+        Command<SimulateError>(CauseErrorCommandHandler);
+        Recover<PlayerCreate>(playerCreatedEvent =>
         {
-            Console.WriteLine($"Recovering {message.PlayerName} ...");
-            Context.ActorOf(Props.Create(()=> new PlayerActor(message.PlayerName,DefaultHealth)), message.PlayerName);
+            Console.WriteLine($"Recovering {playerCreatedEvent.PlayerName} ...");
+            Context.ActorOf(Props.Create(()=> new PlayerActor(playerCreatedEvent.PlayerName,DefaultHealth)), playerCreatedEvent.PlayerName);
         });
     }
     
-    private void HitMessageHandler(HitMessage message)
+    private void HitPlayerCommandHandler(HitPlayer command)
     {
-        var child= Context.Child(message.PlayerName);
-        Console.WriteLine($"{child.Path.Name} selected to receive hit");
-        child.Tell(new HitMessage {Damage = message.Damage});
+        Context.Child(command.PlayerName).Forward(command);
     }
 
-    private void DisplayPlayerStatusMessageHandler(DisplayPlayerStatusMessage message)
+    private void DisplayPlayerStatusCommandHandler(DisplayPlayerStatus command)
     {
-        Context.Child(message.PlayerName)
-            .Tell(new DisplayPlayerStatusMessage());
+        Context.Child(command.PlayerName).Forward(command);
         
     }
-    private void CauseErrorMessageHandler(CauseErrorMessage message)
+    private void CauseErrorCommandHandler(SimulateError command)
     {
-        Context.Child(message.PlayerName)
-            .Tell(new CauseErrorMessage());
+        Context.Child(command.PlayerName).Forward(command);
     }
 
-    private void CreatePlayerMessageHandler(CreatePlayerMessage message)
+    private void CreatePlayerCommandHandler(CreatePlayer command)
     {
-        Persist(message, createMessage =>
+        var @event = new PlayerCreate(command.PlayerName);
+        
+        Persist(@event, playerCreatedEvent =>
         {
-            Console.WriteLine($"{message.PlayerName} Persisted successfully.");
-            Context.ActorOf(Props.Create(()=> new PlayerActor(message.PlayerName,DefaultHealth)), message.PlayerName);
+            Console.WriteLine($"{playerCreatedEvent.PlayerName} event Persisted successfully.");
+            Context.ActorOf(Props.Create(()=> new PlayerActor(playerCreatedEvent.PlayerName,DefaultHealth)), playerCreatedEvent.PlayerName);
         });
-        var children = Context.GetChildren();
-
-        foreach (var child in children)
-        {
-            Console.WriteLine(child.Path.Name);
-        }
+        
     }
 
 }
